@@ -5,7 +5,7 @@ from sklearn import svm
 from sklearn.model_selection import GridSearchCV
 from src.preprocess import process
 
-X_train, X_test, y_train, y_test = process()
+X_train, X_test, y_train, y_test = process("train")
 print("Tuning...")
 grid_param = {"C": np.arange(2, 10, 2),
              "gamma": np.arange(0.1, 1, 0.2)}

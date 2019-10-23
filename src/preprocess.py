@@ -11,7 +11,7 @@ from src.scripts.utils import make_embedding
 if(os.path.exists("./data/data_train.txt")):
     src = "./data/data_train.txt"
 else:
-    src = "../../data/data_train.txt"
+    src = "../data/data_train.txt"
 with open(src) as f:
     content = f.readlines()
 
@@ -34,8 +34,8 @@ def process(state):
     df = pd.DataFrame(content, columns=["Content"])
     df["Label"] = total_label
     # %
-    labels = df["Label"][0:100]
-    data = df["Content"][0:100]
+    labels = df["Label"]
+    data = df["Content"]
 
     if (state == 'train'):
         x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.20, random_state=1)
@@ -55,8 +55,8 @@ def tokenizer(x_train, x_test):
     for x in x_test:
         essay = word_tokenize(x, format="text")
         X_test.append(essay)
-    vectorizer(X_data, X_test)
-    X_data, X_test = vectorizerWord2Vec(X_data, X_test)
+    X_data, X_test =vectorizer(X_data, X_test)
+    # X_data, X_test = vectorizerWord2Vec(X_data, X_test)
     print("Tokenize...")
     return X_data, X_test
 
@@ -69,11 +69,11 @@ def vectorizer(X_data, X_test):
     X_data_tfidf_ngram = tfidf_vect_ngram.transform(X_data)
     X_test_tfidf_ngram = tfidf_vect_ngram.transform(X_test)
     print("Vectorizer...")
-    print(X_data_tfidf_ngram[0])
+    # print(X_data_tfidf_ngram[0])
     return X_data_tfidf_ngram, X_test_tfidf_ngram
 
 def vectorizerWord2Vec(X_data, X_test):
-    embedding_path = "./embeddings/smallFasttext.vi.vec"
+    embedding_path = "./embeddings/baomoi.model.bin"
     X_data_embed_size, X_data_word_map, X_dataembedding_mat = make_embedding(X_data, embedding_path, 500000)
     X_test_embed_size, X_test_word_map, X_test_embedding_mat_X = make_embedding(X_test, embedding_path, 500000)
     print("Word2Vec...")
