@@ -22,6 +22,16 @@ from src.model.DNN_model import DNNModel
 
 SPECIAL_CHARACTER = '0123456789%@$.,=+-!;/()*"&^:#|\n\t\''
 
+
+def dump_to_file(obj, path):
+    pickle.dump(obj, open(path, 'wb'))
+
+
+def load_obj_from_file(path):
+    obj = pickle.load(open(path, 'rb'))
+    return obj
+
+
 # with open('src/testing/data.txt', encoding="utf8") as f:
 with open('topic_detection_train.v1.0.txt', encoding="utf8") as f:
     content = f.readlines()
@@ -31,9 +41,9 @@ regex = re.compile(r'^\S*')
 # print(content[0])
 # print(ViTokenizer.tokenize(content[0]))
 
-content = content[:100]
 # content = content[:1000]
-# content = content[1000:2000]
+# content = content[:1000]
+content = content[2000:3000]
 print(len(content))
 
 label = []
@@ -75,8 +85,12 @@ x_train, x_test, y_train, y_test = train_test_split(sentences, labels, test_size
 # X_train = count_vectorizer.transform(x_train)
 # X_test = count_vectorizer.transform(x_test)
 
-tfidf_vectornizer = TfidfVectorizer(analyzer="word", max_features=50000)
-tfidf_vectornizer.fit(x_train)
+# tfidf_vectornizer = TfidfVectorizer(analyzer="word")
+# tfidf_vectornizer.fit(sentences)
+# dump_to_file(tfidf_vectornizer, "tfidf_full_vocab.pk")
+
+tfidf_vectornizer = load_obj_from_file("tfidf_full_vocab.pk")
+
 X_train = tfidf_vectornizer.transform(x_train)
 X_test = tfidf_vectornizer.transform(x_test)
 
@@ -115,29 +129,29 @@ def train(train_model):
     loss, accuracy = train_model.evaluate(X_test, y_test, verbose=1)
     print("Testing Accuracy:  {:.4f}".format(accuracy))
 
-    # filename = "DNN_model_training_1000"
-    # pickle.dump(train_model, open(filename, 'wb'))
+    filename = "DNN_model_training_1000"
+    dump_to_file(train_model, filename)
 
 
 def check():
     # file_path = "src/testing/DNN_model_training_1000"
     file_path = "DNN_model_training_1000"
-    custom_model = pickle.load(open(file_path, 'rb'))
+    custom_model = load_obj_from_file(file_path)
 
-    # loss, accuracy = custom_model.evaluate(X_train, y_train, verbose=1)
-    # print("Training Accuracy: {:.4f}".format(accuracy))
-    # loss, accuracy = custom_model.evaluate(X_test, y_test, verbose=1)
-    # print("Testing Accuracy:  {:.4f}".format(accuracy))
+    loss, accuracy = custom_model.evaluate(X_train, y_train, verbose=1)
+    print("Training Accuracy: {:.4f}".format(accuracy))
+    loss, accuracy = custom_model.evaluate(X_test, y_test, verbose=1)
+    print("Testing Accuracy:  {:.4f}".format(accuracy))
 
     # predictions = custom_model.predict(X_train)
     # print(predictions)
-    report = classification_report(y_test, custom_model.predict(X_test))
-    print(report)
+    # report = classification_report(y_test, custom_model.predict(X_test))
+    # print(report)
 
 
 model = DNNModel(input_dim).get_model()
 
 
-# check()
+check()
 
-train(model)
+# train(model)

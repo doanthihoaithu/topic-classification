@@ -12,7 +12,7 @@ class DNNModel(object):
         model = Sequential()
         node = 512  # number of nodes
         dropout = 100
-        n_classes = 25
+        n_classes = 23
         n_layers = 4  # number of  hidden layer
         model.add(Dense(node, input_dim=self.__input_dim, activation='relu'))
         model.add(Dropout(dropout))
