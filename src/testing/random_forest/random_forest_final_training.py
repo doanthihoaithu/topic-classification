@@ -9,7 +9,7 @@ from src.model.random_forest_model import RandomForestModel
 from src.utils import get_project_root
 ROOT_DIR = get_project_root()
 print(ROOT_DIR)
-data_file = str(ROOT_DIR) + "/resources/data.txt"
+data_file = str(ROOT_DIR) + "/resources/topic_detection_train.v1.0.txt"
 
 with open(data_file, encoding="utf8") as f:
     content = f.readlines()
