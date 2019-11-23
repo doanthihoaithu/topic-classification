@@ -3,7 +3,7 @@ from src.utils import get_project_root, predict_and_save_to_txt, predict_and_sav
 ROOT_DIR = get_project_root()
 working_dir = str(ROOT_DIR) + "/src/testing/random_forest"
 print(ROOT_DIR)
-test_file = str(ROOT_DIR) + "/resources/data.txt"
+test_file = str(ROOT_DIR) + "/resources/sell_detection_train.v1.0.txt"
 model_file = working_dir + "/" + "random_forest_final_model_version_2.sav"
 
 txt_result_file = working_dir + "/" + "result.txt"

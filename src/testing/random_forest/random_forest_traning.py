@@ -25,15 +25,12 @@ for i in range(0, len(content)):
 
 df = pd.DataFrame(content, columns=['Essay'])
 df['Label'] = label
-# print(df)
-
 labels = df['Label']
-# print(labels)
 data = df['Essay']
-# print(data)
 
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(data, labels , test_size=0.20, random_state=1)
+
 # print("Test data\n")
 # print(X_test)
 
@@ -43,7 +40,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 
 working_dir = str(ROOT_DIR) + "/src/testing/random_forest"
-model_file_name = working_dir + "/" + "train_model.sav"
+model_file_name = working_dir + "/" + "random_forest_train_model.sav"
 def train(model):
      model.clf.fit(X_train,y_train)
      pickle.dump(model, open(model_file_name, 'wb'))
@@ -54,9 +51,9 @@ def train(model):
 def check():
     loaded_model = pickle.load(open(model_file_name, 'rb'))
     predicts = loaded_model.clf.predict(X_test)
-    y_train_pred = classification_report(y_test, predicts)
-    print("""【{model_name}】\n Train Accuracy: \n{train}
-              """.format(model_name=loaded_model.__class__.__name__, train=y_train_pred))
+    y_test_pred = classification_report(y_test, predicts)
+    print("""【{model_name}】\n Test Accuracy: \n{test}
+              """.format(model_name=loaded_model.__class__.__name__, test=y_test_pred))
 
-train(RandomForestModel())
+# train(RandomForestModel())
 check()

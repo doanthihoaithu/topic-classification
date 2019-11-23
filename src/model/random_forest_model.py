@@ -17,7 +17,6 @@ class RandomForestModel(object):
             ("transformer", FeatureTransformer()),
             ("vect", CountVectorizer()),
             ("tfidf", TfidfTransformer()),
-            # ("clf-svm", SGDClassifier(loss='log', penalty='l2', alpha=1e-3, random_state=None))
             ("clf-rf", RandomForestClassifier(n_estimators=300, criterion="gini", bootstrap=True))
         ])
 
